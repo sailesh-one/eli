@@ -1,7 +1,7 @@
 <h1> Tool Compare DB - Under Develpment</h1>
 <?php
 exit;
-include($_SERVER['DOCUMENT_ROOT']."/tools_india/config.php");
+include($_SERVER['DOCUMENT_ROOT']."/tools_india/eli_config.php");
 
 $cmp_db_host = "India Database Compare";
 
