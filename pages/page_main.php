@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>UCDMS</title>
+  <title>ELI</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="User Cars Dealer Management System (UCDMS)">
+  <meta name="description" content="ELI BUSINESS APPLICATION">
   <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="<?= $config['base_url'] ?>/assets/bootstrap/bootstrap.min.css?v=1">
   <link rel="stylesheet" href="<?= $config['base_url'] ?>/assets/bootstrap/bootstrap-icons.min.css?v=1">

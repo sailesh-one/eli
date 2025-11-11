@@ -8,8 +8,8 @@ const template = /*html*/ `
         <div class="modal-content custom-modal-content rounded-2">
           <div :class="second_step ? 'loginbg_step2' : 'loginbg'" class="p-4 bg-white position-relative">
             <div class="text-center mb-3">
-            <div class="modal-logo mb-2">
-              <img src="/assets/images/ucdms.png" alt="Logo" class="logo-img" />
+            <div class="modal-logo mb-2 h1 font-weight-bold">
+              ELI
             </div>
               <h5 class="text-dark">LOGIN</h5>
             </div>

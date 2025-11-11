@@ -107,7 +107,7 @@ export const Header = {
     <header class="bg-white border-bottom shadow-sm p-1 sticky-top amek-parent-header" v-if="userStore?.deviceInfo?.type === 'web'">
       <nav class="navbar navbar-expand-lg container-fluid" role="navigation" aria-label="Main Navigation">
         <a class="navbar-brand" href="#" @click.prevent="goTo('home')" aria-label="Go to Home">
-          <img src="/assets/images/ucdms.png" alt="Logo" width="119" />
+          ELI
         </a>
 
         <!-- Desktop Menu -->
