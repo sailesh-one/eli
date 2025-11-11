@@ -1,5 +1,5 @@
 <?php
-require dirname($_SERVER['DOCUMENT_ROOT']) . '/config.php';
+require ($_SERVER['DOCUMENT_ROOT']) . '/eli_config.php';
 
 function getUserIPAddress(): string {
     return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
