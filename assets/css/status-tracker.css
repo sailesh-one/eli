@@ -1,0 +1,213 @@
+/* Status Tracker Styles */
+.status-tracker-container .card-header {
+    background: #4A4F54 !important;
+    border: none;
+    padding: 0.5rem 0.75rem; /* Further reduced padding */
+    color: white;
+}
+
+.status-tracker {
+    position: relative;
+    width: 100%;
+}
+
+.status-tracker .card-body {
+    padding: 0.75rem; /* Further reduced from 1rem */
+    background: white;
+}
+
+.status-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.status-step-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.status-step-container:last-child {
+    flex: 0 0 auto;
+}
+
+.status-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    min-width: 80px; /* Further reduced from 100px */
+}
+
+.step-icon {
+    width: 35px; /* Further reduced from 45px */
+    height: 35px; /* Further reduced from 45px */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; /* Further reduced from 18px */
+    font-weight: bold;
+    margin-bottom: 6px; /* Further reduced from 8px */
+    border: 2px solid;
+    transition: all 0.3s ease;
+}
+
+.step-content {
+    text-align: center;
+}
+
+.step-title {
+    font-weight: 600;
+    font-size: 12px; /* Further reduced from 13px */
+    margin-bottom: 1px; /* Further reduced from 2px */
+    line-height: 1.1;
+}
+
+.step-subtitle {
+    font-size: 10px; /* Further reduced from 11px */
+    opacity: 0.75; /* Slightly reduced opacity */
+    line-height: 1.1;
+}
+
+/* Status States */
+.status-step.completed .step-icon {
+    background-color: #4A4F54;
+    border-color: #4A4F54;
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 79, 84, 0.3);
+}
+
+.status-step.completed .step-title {
+    color: #4A4F54;
+    font-weight: 700;
+}
+
+.status-step.completed .step-subtitle {
+    color: #4A4F54;
+}
+
+.status-step.active .step-icon {
+    background: #989991;
+    border-color: #989991;
+    color: white;
+    box-shadow: 0 4px 16px rgba(152, 153, 145, 0.4);
+    animation: pulse 2s infinite;
+}
+
+.status-step.active .step-title {
+    color: #989991;
+    font-weight: 700;
+}
+
+.status-step.active .step-subtitle {
+    color: #989991;
+}
+
+.status-step.pending .step-icon {
+    background-color: #f8f9fa;
+    border-color: #CCCCCC;
+    color: #6c757d;
+}
+
+.status-step.pending .step-title {
+    color: #6c757d;
+}
+
+.status-step.pending .step-subtitle {
+    color: #adb5bd;
+}
+
+/* Connector Lines */
+.status-connector {
+    flex: 1;
+    height: 2px; /* Further reduced from 3px */
+    margin: 0 6px; /* Further reduced from 8px */
+    position: relative;
+    top: -26px; /* Adjusted for smaller icons */
+    z-index: 1;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.status-connector.completed {
+    background: linear-gradient(to right, #4A4F54, #989991);
+    box-shadow: 0 2px 8px rgba(74, 79, 84, 0.2);
+}
+
+.status-connector.pending {
+    background-color: #CCCCCC;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 16px rgba(152, 153, 145, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(152, 153, 145, 0.6);
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 4px 16px rgba(152, 153, 145, 0.4);
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 2s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .status-steps {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .status-step-container {
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+    
+    .status-step-container:last-child {
+        margin-bottom: 0;
+    }
+    
+    .status-connector {
+        width: 4px;
+        height: 40px;
+        margin: 10px 0;
+        top: 0;
+    }
+    
+    .status-connector.completed {
+        background: linear-gradient(to bottom, #28a745, #20c997);
+    }
+    
+    .step-icon {
+        width: 40px; /* Reduced for mobile */
+        height: 40px; /* Reduced for mobile */
+        font-size: 16px; /* Reduced for mobile */
+    }
+    
+    .status-step {
+        min-width: auto;
+    }
+}

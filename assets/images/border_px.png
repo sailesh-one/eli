@@ -1,0 +1,122 @@
+                                   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head><!--<link href="/css/jquery.qtip.css" rel="stylesheet" type="text/css" />
+<link href="/css/bootstrap.css" rel="stylesheet"/>  -->
+<link href="/css/bmw_style.css" type="text/css" rel="stylesheet">
+<style>
+.pg { margin-left: 41px;}
+.g-16 { width: 1174px;}
+.m-message-container .error { margin-top: 50px; min-height: 448px;}
+.m-message-container .error h1 { font-size: 120px; line-height: 120px; margin-bottom: 20px;}
+.m-message-container .error h2 { font-size: 17px; line-height: 17px; margin-bottom: 28px;}
+.m-message-container .error h3 { padding-bottom:3px }
+.m-message-container .error h3, .m-message-container .error .m-contents p { color: #262626; font-size: 13px; line-height: 16px; width: 600px;}
+.m-message-container .m-cta-links { margin-top: 10px;}
+.m-contents p{ font-family:sans-serif !important; padding-bottom:15px;}
+.m-message-container .m-cta-links { margin-top: 10px;}
+.lnk-arrow-right {background-image: url("images/lnk-arrow-right.png");}
+.lnk-1 { background-position: 0 -2px; background-repeat: no-repeat; color: #666 !important; padding-left: 13px;}
+.lnk-1:hover { background-position: 0 -52px;}
+.lnk:hover, .lnk:active { color: #1c69d4 !important;}
+.m-message-container .m-cta-links { margin-top: 10px;}
+.lnk, .lnk:link { font-family:bmwtypewebbold,sans-serif !important; font-weight:normal !important;}
+</style>
+</head>
+<body>
+
+<script language="javascript" >
+var config_browser = "unknown"; var config_browser_version="0.0.0";
+vsession_id = "71881vgdgf702odmjdmsnfkgfd";
+</script>
+<script language="javascript">
+	function show_popup(val){
+	document.getElementById(val).style.display = "block";
+	}
+	function hide_popup(val){
+	document.getElementById(val).style.display = "none";
+	}
+</script>
+<div class="mainwrap">
+ <!--header start-->
+  <div class="header">
+    <!--logo start-->
+    <style>
+	.logo, .logo img {width:103px; z-index:1;}
+	.logo img {box-shadow:0px 0px 2px 0px #808080}
+	</style>
+    <div class="logo" > <img src="/images/logo_new.png" alt="" title="" > </div>
+    <!--logo end-->
+
+    <div class="header_left">
+      <!--nav start-->
+
+      <!--nav end-->
+    </div>
+  </div>    </div>
+  <!-- Header end -->
+    <style>
+    .logo_bmw a {
+    background:url(//images/logo_bmw.png) no-repeat;
+      background-size: 70px 70px;
+     padding-bottom: 19px;
+    margin-top: -16px;
+    display: block;
+}
+    </style>
+<div class="m-message-container pg">
+    <div class="error cf pg">
+      <div class="g-16">
+        <h1 class="error_h1">Error 404.</h1>
+        <h2 class="error_h2">&nbsp;</h2>
+        <h3 class="error_h3">Whoops...</h3>
+        <div class="m-contents">
+          <p>Unfortunately there has been an error processing your request.</p>
+          <h3 id="m-error-message">Please accept our apologies for any inconvenience.</h3>
+          <p>Simply click the links below to to the homepage.</p>
+        </div>
+        <p class="m-cta-links" id="ctl00_cplcMain_ctl00_P1"><a class="lnk lnk-1 lnk-arrow-right" href="https://www.bmw-bps.in/"> Homepage </a>
+       </p>
+      </div>
+    </div>
+  </div>
+<div class="mainwrap">
+ <!--footer start-->
+  <div class="footer">
+    <!--footer top start-->
+    <div class="footer_top">
+    <style>
+	.footer_left ul li {background-position:0 -101px;}
+	</style>
+      <div class="footer_left">
+      </div>
+
+    <div class="footer_btm">
+      <p> &copy; BMW 2020 </p>
+    </div>
+  </div>
+  </div>
+  <!--footer end--><script type="text/javascript">
+
+function vtypeprice(vtype)
+{
+	if(vtype != 'bike' ) { return 10000 ;}
+	else { return 2000 ; }
+}
+
+</script>
+<script type="text/javascript" >
+
+function disableSelection(target){
+
+	try{
+    if (typeof target.onselectstart!="undefined") //IE route
+        target.onselectstart=function(){return false}
+	}catch(e){}
+}
+
+disableSelection(document.getElementsByTagName("div"));
+disableSelection(document.getElementsByTagName("a"));
+disableSelection(document.getElementsByTagName("p"));
+disableSelection(document.getElementsByTagName("td"));
+
+</script>

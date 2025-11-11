@@ -1,0 +1,138 @@
+# -------------------------------------------------------------
+# PHP configuration (can only be used if PHP runs as mod_php)
+# -------------------------------------------------------------
+php_value date.timezone 'Asia/Kolkata'
+php_value expose_php Off
+php_value short_open_tag 1
+php_value memory_limit 512M
+php_value max_execution_time 3600
+php_value max_input_time 3600
+php_value post_max_size 512M
+php_value upload_max_filesize 256M
+php_value allow_url_fopen Off
+php_value allow_url_include Off
+php_value display_startup_errors Off
+php_value html_errors Off
+php_value log_errors On
+php_value track_errors Off
+
+# -------------------------------------------------------------
+# Enable Rewrite Engine
+# -------------------------------------------------------------
+RewriteEngine On
+
+# -------------------------------------------------------------
+# Show 404 for direct access to any .php file except index.php
+# -------------------------------------------------------------
+
+RewriteCond %{REQUEST_URI} \.php$ [NC]
+RewriteCond %{REQUEST_URI} !/index\.php$ [NC]
+RewriteRule ^ - [R=404,L]
+
+RewriteRule ^vendor/ - [F,L]
+
+
+# -------------------------------------------------------------
+# Deny access to sensitive folders
+# -------------------------------------------------------------
+RewriteRule ^(classes|includes|apis|config|vendor|common|common_control|private|backup|logs)/ - [F,L]
+
+# -------------------------------------------------------------
+# Block access to common hidden files / VCS / config
+# -------------------------------------------------------------
+RedirectMatch 404 /\.(git|svn|hg|bzr|cvs|pki|ssh|env|htaccess|htpasswd|gitignore|gitattributes|gitmodules|bash_history|bash_logout|bash_profile|bashrc|cshrc|lesshst|mysql_history|rediscli_history|rnd|tcshrc|viminfo|DS_Store)
+
+# -------------------------------------------------------------
+# Friendly URLs: route non-existing files/dirs to index.php
+# -------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?request_url=$1 [B,QSA,L]
+
+
+
+# -------------------------------------------------------------
+# Disable directory listing
+# -------------------------------------------------------------
+Options -Indexes
+
+# -------------------------------------------------------------
+# Caching: expire static assets (images, css, js, pdf)
+# -------------------------------------------------------------
+ExpiresActive On
+ExpiresByType image/gif A2592000
+ExpiresByType image/jpeg A2592000
+ExpiresByType image/jpg A2592000
+ExpiresByType image/png A2592000
+ExpiresByType text/css A2592000
+ExpiresByType text/javascript A2592000
+ExpiresByType application/x-javascript A2592000
+ExpiresByType application/pdf A2592000
+
+# -------------------------------------------------------------
+# Remove ETags (disable file change fingerprinting)
+# -------------------------------------------------------------
+FileETag None
+Header unset ETag
+
+# -------------------------------------------------------------
+# Force PDFs to display inline
+# -------------------------------------------------------------
+<FilesMatch "\.(?i:pdf)$">
+    ForceType application/octet-stream
+    Header set Content-Disposition inline
+</FilesMatch>
+
+# -------------------------------------------------------------
+# Block access to hidden files (.*)
+# -------------------------------------------------------------
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|pnpm-lock\.yaml)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# -------------------------------------------------------------
+# Basic & advanced security headers
+# -------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Clickjacking protection
+    Header always set X-Frame-Options "SAMEORIGIN"
+    # Prevent content sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    # XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+    # Referrer policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    # Permissions policy (disable camera, mic, etc.)
+    Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+    # HSTS (only over HTTPS)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+    # Content-Security-Policy
+    # Optionally hide Apache version (best done in server config)
+    Header unset Server
+    # Optionally remove Accept-Encoding (not usually needed)
+    # Header unset Accept-Encoding
+    # Optionally force compressible types; better to configure compression at server level
+    # Header add Accept-Encoding "gzip, deflate"
+    # Secure cookies
+    Header onsuccess edit Set-Cookie ^(.*)$ "$1; Secure; SameSite=None"
+
+    Header always set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css text/javascript application/javascript application/x-javascript application/json application/xml application/xhtml+xml application/rss+xml application/atom+xml image/svg+xml
+    AddOutputFilterByType DEFLATE font/ttf font/otf font/woff font/woff2
+    SetEnvIfNoCase Request_URI \.(?:gif|jpg|jpeg|png|webp|mp4|avi|mov|zip|gz|bz2|rar|7z)$ no-gzip dont-vary
+    Header append Vary Accept-Encoding
+</IfModule>
+
+# -------------------------------------------------------------
+# PHP security: auto-prepend common security script
+# -------------------------------------------------------------
+php_value include_path ./:../:../../:../../../:../../../../:../../../../../:../../../../../../:../../../../../../../
+php_value auto_prepend_file common_control/common_security.php

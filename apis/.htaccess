@@ -1,0 +1,39 @@
+# -------------------------------------------------------------
+# .htaccess for the 'apis' directory
+# -------------------------------------------------------------
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# -------------------------------------------------------------
+# Set the rewrite base to the current directory (apis/)
+# This is crucial for correct path resolution.
+# -------------------------------------------------------------
+RewriteBase /apis/
+
+# -------------------------------------------------------------
+# Disable trailing slash redirects for cleaner API URLs
+# -------------------------------------------------------------
+DirectorySlash Off
+
+# -------------------------------------------------------------
+# Rule to redirect all requests to index.php
+# -------------------------------------------------------------
+
+# Condition 1: Check if the requested file does not physically exist.
+# This allows access to any static files you might have in the directory,
+# like images or CSS, if you were to add them.
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Condition 2: Check if the request is not for the 'index.php' file itself.
+# This prevents an infinite rewrite loop.
+RewriteCond %{REQUEST_URI} !/index\.php$ [NC]
+
+# The main rewrite rule:
+# If the above conditions are met, rewrite the request to index.php.
+# '^(.*)$' captures the entire URI path.
+# 'index.php' is the target file.
+# '[QSA,L]' are the flags:
+#   - QSA (Query String Append): Appends the existing query string to the new URL.
+#   - L (Last): Stops processing any further rewrite rules if this one is matched.
+RewriteRule ^(.*)$ index.php [QSA,L]

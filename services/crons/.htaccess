@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Force HTTPS keeping method
+# RewriteCond %{HTTPS} off
+
+# Disable trailing slash redirect
+DirectorySlash Off
+
+# Route everything except index.php to index.php
+RewriteCond %{REQUEST_URI} !/services/crons/$
+#RewriteRule ^(.*)$ index.php [QSA,L]

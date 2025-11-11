@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Force HTTPS keeping method
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=307]
+
+# Disable trailing slash redirect
+DirectorySlash Off
+
+# Route everything except index.php to index.php
+RewriteCond %{REQUEST_URI} !/services/tools/$
+#RewriteRule ^(.*)$ index.php [QSA,L]

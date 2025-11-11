@@ -1,0 +1,8 @@
+{
+    "require": {
+        "firebase/php-jwt": "^6.11",
+        "aws/aws-sdk-php": "^3.352",
+        "phpoffice/phpspreadsheet": "^5.1",
+        "chrome-php/chrome": "v1.11.0"
+    }
+}

@@ -1,0 +1,9 @@
+RewriteEngine On
+
+
+# Disable trailing slash redirect
+DirectorySlash Off
+
+# Route everything except index.php to index.php
+RewriteCond %{REQUEST_URI} !/services/index\.php$
+RewriteRule ^(.*)$ index.php [QSA,L]
