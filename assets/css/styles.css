@@ -169,11 +169,11 @@ input, select, textarea, button {
 }
 
 .login-bg-one {
-  background: url('/assets/images/L461_23MY_001_GLHD_DX_Hero.jpg') no-repeat center center;
+  background: url('/assets/images/wall.jpg') no-repeat center center;
   background-size: cover;
 }
 .login-bg-two {
-  background: url('/assets/images/L461_23MY_001_GLHD_DX_Hero.jpg') no-repeat center center fixed;
+  background: url('/assets/images/wall.jpg') no-repeat center center fixed;
 }
 /* Login background */
 .login-bg {
