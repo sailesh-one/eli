@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']."/tools_india/config.php");
+include($_SERVER['DOCUMENT_ROOT']."/tools_india/eli_config.php");
 	$db_host = $config['db_host'];
 	$db_user = $config['db_user'];
 	$db_pass = $config['db_pass'];

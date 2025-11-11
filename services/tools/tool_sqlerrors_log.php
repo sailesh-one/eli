@@ -2,7 +2,7 @@
 
 <?php
 exit;
-	include($_SERVER['DOCUMENT_ROOT']."/tools/config.php");
+	include($_SERVER['DOCUMENT_ROOT']."/tools/eli_config.php");
 	//$connection = mysqli_connect()	
 
   	$query = "select count(*) as cnt from  sql_error_log order by id desc "  ;     

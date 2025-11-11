@@ -1,7 +1,7 @@
 <h1> SMS Otp Log - Under Develpment</h1>
 <?php
 exit;
-include($_SERVER['DOCUMENT_ROOT']."/tools_india/config.php");
+include($_SERVER['DOCUMENT_ROOT']."/tools_india/eli_config.php");
 
   	$query = "select count(*) as cnt from  sms_bps_log order by id desc "  ;     
 	$res = mysqli_query( $connection , $query );
