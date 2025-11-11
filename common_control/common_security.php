@@ -1,7 +1,6 @@
 <?php
-require dirname($_SERVER['DOCUMENT_ROOT']) . '/eli_config.php';
-echo $_SERVER['DOCUMENT_ROOT'];
-exit;
+require dirname($_SERVER['DOCUMENT_ROOT']) . '/config.php';
+
 function getUserIPAddress(): string {
     return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 }
@@ -156,7 +155,7 @@ function hsc($data): string {
     return htmlspecialchars((string)$data, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-    require($_SERVER['DOCUMENT_ROOT'] . "common_control/common_security_class.php");
+    require($_SERVER['DOCUMENT_ROOT'] . "/common_control/common_security_class.php");
 	$sec_obj = new SECURITY();
 	//$sec_obj->con_redis_security = $redis;
 	$sec_obj->filter( $_POST );

@@ -3,7 +3,7 @@
 // Leads route handler (protected, optimized)
 global $auth;
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common/common_regex.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . 'classes/class_dashboard.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/class_dashboard.php';
 
 
 $dashboard = new Dashboard();
