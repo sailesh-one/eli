@@ -20,18 +20,16 @@ try {
             try {
                 // $captcha_code = $_REQUEST['captcha_code'] ?? '';
                 // $captcha_token = $_REQUEST['captcha_token'] ?? '';
-                $auth_user = $_REQUEST['auth_user'] ?? '';
-                $email = trim($_REQUEST['email'] ?? '');
+                $auth_user = $_REQUEST['auth_user'] ?? 'dealer';
+                $mobile = trim($_REQUEST['mobile'] ?? '');
                 $errors = [];
-                if (empty($captcha_code)) $errors['captcha_code'] = 'Captcha code is required.';
-                if (empty($captcha_token)) $errors['captcha_token'] = 'Captcha token is required.';
-                if (empty($auth_user)) $errors['auth_user'] = 'Auth Type is required.';
-                if (empty($email)) $errors['email'] = 'Email address is required.';
-                $regexErrors = validate_fields_regex(['email' => $email], ['email']);
+            
+                if (empty($mobile)) $errors['mobile'] = 'Mobile is required.';
+                $regexErrors = validate_fields_regex(['mobile' => $mobile], ['mobile']);
                 $errors = array_merge($errors, $regexErrors);
                 if (!empty($errors)){ api_response(403, 'fail', 'Validation failed.', [], [], $errors); }
                     $auth->login('auth', [
-                        'email' => $email,
+                        'mobile' => $mobile,
                         // 'captcha_code' => $captcha_code,
                         // 'captcha_token' => $captcha_token,
                         'auth_user' => $auth_user,
@@ -43,24 +41,24 @@ try {
 
         case 'otpverify':
             try {
-                $email = trim($_REQUEST['email'] ?? '');
+                $mobile = trim($_REQUEST['mobile'] ?? '');
                 $otp = trim($_REQUEST['otp'] ?? '');
                 $otp_token = $_REQUEST['otp_token'] ?? '';
                 $device_id = $_REQUEST['device_id'] ?? '';
                 $device_type = $_REQUEST['device_type'] ?? '';
                 $device_version = $_REQUEST['device_version'] ?? '';
                 $errors = [];
-                if (empty($email)) $errors['email'] = 'Email address is required.';
+                if (empty($mobile)) $errors['mobile'] = 'Mobile is required.';
                 if (empty($otp)) $errors['otp'] = 'OTP is required.';
                 if (empty($otp_token)) $errors['otp_token'] = 'OTP token is required.';
                 $regexErrors = validate_fields_regex([
-                    'email' => $email,
+                    'mobile' => $mobile,
                     'otp' => $otp
-                ], ['email', 'otp']);
+                ], ['mobile', 'otp']);
                 $errors = array_merge($errors, $regexErrors);
                 if (!empty($errors)) api_response(400, 'fail', 'Validation failed.', [],[],$errors);
                 $auth->otpVerify([
-                    'email' => $email,
+                    'mobile' => $mobile,
                     'otp' => $otp,
                     'otp_token' => $otp_token,
                     'device_id' => $device_id,

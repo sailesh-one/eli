@@ -91,7 +91,7 @@ class Auth {
     }
 
     private function validateEmail($email) {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
+        return true;
     }
     private function getUserTable($authUser) {
         return $authUser === "admin" ? "users_admin" : "users";
@@ -160,13 +160,13 @@ class Auth {
         //     api_response(400, 'fail', 'Captcha verification failed.');
         // }
         // Step 1: Validate inputs
-        $email   = trim($request['email'] ?? '');
+        $mobile   = trim($request['mobile'] ?? '');
         $errors   = [];
 
-        if ($email === '') {
-            $errors['email'] = "Email address is required.";
-        } elseif (!$this->validateEmail($email)) {
-            $errors['email'] = "Invalid email address.";
+        if ($mobile === '') {
+            $errors['mobile'] = "Email address is required.";
+        } elseif (!$this->validateEmail($mobile)) {
+            $errors['mobile'] = "Invalid mobile.";
         }
         if (!empty($errors)) {
             api_response(400, 'fail', 'Validation failed.', [], [], $errors);
@@ -183,11 +183,11 @@ class Auth {
         $otpExpiry  = $this->setup['otp_expiry'] ?? 300; // default 5 min
         $fiveMinAgo = $now - $otpExpiry;
 
-        $emailEsc   = mysqli_real_escape_string($this->sql, $email);
+        $emailEsc   = mysqli_real_escape_string($this->sql, $mobile);
         $deviceIdEsc = mysqli_real_escape_string($this->sql, $_REQUEST['device_id']);
         $ipEsc       = mysqli_real_escape_string($this->sql, $_SERVER['REMOTE_ADDR']);
         // Step 4: Check user exists & active
-        $query = "SELECT u.id,u.name FROM $u_table as u  JOIN config_roles as r ON (u.role_id=r.id) WHERE u.email = '$emailEsc' AND u.active = 'y' AND u.role_id != '' AND r.role_type=$r_table AND r.active = 'y'  LIMIT 1";
+        $query = "SELECT u.id,u.name FROM $u_table as u WHERE u.mobile = '$emailEsc' AND u.active = 'y'  LIMIT 1";
         $res   = mysqli_query($this->sql, $query);
         if (!$res) {
             logSqlError(mysqli_error($this->sql), $query, 'auth-login-check-user', true);
@@ -256,13 +256,13 @@ class Auth {
     public function otpVerify($request) 
     {
 
-        $email = trim($request['email'] ?? '');
+        $mobile = trim($request['mobile'] ?? '');
         $otp = trim($request['otp'] ?? '');
         $otpToken = $request['otp_token'] ?? '';
         $deviceId = mysqli_real_escape_string($this->sql, $request['device_id'] ?? '');       
         $errors = [];
-        if (empty($email)) $errors[] = "Email address is required.";
-        elseif (!$this->validateEmail($email)) $errors[] = "Invalid email address.";
+        if (empty($mobile)) $errors[] = "Mobile is required.";
+        elseif (!$this->validateEmail($mobile)) $errors[] = "Invalid mobile.";
         if (empty($otp)) $errors[] = "OTP is required.";
         if (empty($otpToken)) $errors[] = "OTP token is required.";
         if ($errors) $this->errorResponse("Validation errors.", $errors);  
@@ -282,7 +282,7 @@ class Auth {
         $nonce = $tokenData['nonce'] ?? '';
         $query = "SELECT id,user_id,auth_user 
                 FROM users_login_log 
-                WHERE email = '$email'                    
+                WHERE email = '$mobile'                    
                     AND device_id = '$deviceId'
                     AND user_id = '$userId'
                     AND otp_token_nonce = '$nonce'
@@ -354,21 +354,11 @@ class Auth {
         $u_table = $this->getUserTable($authUser);
         $r_table = $this->getUserRoleType($authUser);
 
-        $sql = "SELECT u.id, u.name, u.email, u.mobile, u.active, u.role_id,
-                    r.role_name,r.role_main,r.description";
-                    
-        if ($authUser !== "admin") {
-            $sql .= ", d.id AS dealer_id, d.name AS dealer_name ";
-        }
+        $sql = "SELECT u.id, u.name, u.email, u.mobile, u.active";
 
-        $sql .= " FROM $u_table AS u
-                JOIN config_roles AS r ON (u.role_id = r.id)";
+        $sql .= " FROM $u_table AS u";
 
-        if ($authUser !== "admin") {
-            $sql .= " LEFT JOIN dealer_groups AS d ON u.dealership_id = d.id";
-        }
-
-        $sql .= " WHERE u.id = '" . mysqli_real_escape_string($this->sql, $userId) . "' AND u.active = 'y' AND u.role_id != '' AND r.role_type = $r_table AND r.active = 'y' LIMIT 1";
+        $sql .= " WHERE u.id = '" . mysqli_real_escape_string($this->sql, $userId) . "' AND u.active = 'y' LIMIT 1";
 
         $res = mysqli_query($this->sql, $sql);
         $user = $res ? mysqli_fetch_assoc($res) : null;
@@ -377,11 +367,11 @@ class Auth {
             api_response(404, 'fail', 'User not found or inactive.');
         }
 
-        $user['info'] = [
-            "id"   => $user['dealer_id'] ?? null,
-            "name" => $user['dealer_name'] ?? null
-        ];
-        unset($user['dealer_id'], $user['dealer_name']);
+        // $user['info'] = [
+        //     "id"   => $user['dealer_id'] ?? null,
+        //     "name" => $user['dealer_name'] ?? null
+        // ];
+        // unset($user['dealer_id'], $user['dealer_name']);
 
         $user['route'] = $this->getUserRoleRoute($authUser);
         $modules = $this->rolePermissions($user['role_id'] ?? 0, $authUser);
@@ -829,13 +819,9 @@ class Auth {
                         u.mobile,
                         u.role_id,
                         u.branch_id,
-                        d.id AS dealership_id,
-                        d.name AS dealership_name,
                         r.role_name,
                         r.role_main
                     FROM users AS u
-                    JOIN dealer_groups AS d 
-                        ON (u.dealership_id = d.id)
                     JOIN config_roles AS r 
                         ON (u.role_id = r.id) 
                     WHERE u.id = $user_id";
