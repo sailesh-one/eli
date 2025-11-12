@@ -18,8 +18,8 @@ try {
 
         case 'login':
             try {
-                $captcha_code = $_REQUEST['captcha_code'] ?? '';
-                $captcha_token = $_REQUEST['captcha_token'] ?? '';
+                // $captcha_code = $_REQUEST['captcha_code'] ?? '';
+                // $captcha_token = $_REQUEST['captcha_token'] ?? '';
                 $auth_user = $_REQUEST['auth_user'] ?? '';
                 $email = trim($_REQUEST['email'] ?? '');
                 $errors = [];
@@ -32,8 +32,8 @@ try {
                 if (!empty($errors)){ api_response(403, 'fail', 'Validation failed.', [], [], $errors); }
                     $auth->login('auth', [
                         'email' => $email,
-                        'captcha_code' => $captcha_code,
-                        'captcha_token' => $captcha_token,
+                        // 'captcha_code' => $captcha_code,
+                        // 'captcha_token' => $captcha_token,
                         'auth_user' => $auth_user,
                     ]);
             } catch (Throwable $e) {

@@ -40,6 +40,7 @@ class Mailer
      */
     public function send(string $to, string $subject, string $body, bool $isHtml = true): bool
     {
+        return true;
         // Restrict email sending based on environment
         if (!$this->isProd) {
             $to = "bmwtech@cartrade.com";

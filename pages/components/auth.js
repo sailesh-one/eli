@@ -96,14 +96,19 @@ export const AuthComponent = {
       }
     };
   },
-  async created() {
-    this.checkNetworkStatus();
-    const [storeModule] = await $importComponent(['/pages/stores/userStore.js']);
-    this.userStore = storeModule.useUserStore(); 
-    this.boundCheckToken = this.checkToken.bind(this);
-    window.addEventListener('storage', this.boundCheckToken);
+ async created() {
+  this.checkNetworkStatus();
+  const [storeModule] = await $importComponent(['/pages/stores/userStore.js']);
+  this.userStore = storeModule.useUserStore(); 
+  this.boundCheckToken = this.checkToken.bind(this);
+  window.addEventListener('storage', this.boundCheckToken);
+
+  // Only check token if not on root intro page
+  if (window.location.pathname !== '/') {
     this.checkToken();
-  },
+  }
+},
+
   beforeDestroy() {
     window.removeEventListener('storage', this.boundCheckToken);
     this.clearTimer();

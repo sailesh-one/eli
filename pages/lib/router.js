@@ -1,9 +1,9 @@
 const { createRouter, createWebHistory } = VueRouter;
 
 // ===== Helpers =====
-const getRole = path => path.startsWith('/admin') ? 'admin' : 'dealer';
-const getDefaultRoute = role => role === 'admin' ? '/admin/home' : '/home';
-const getAuthPath = role => role === 'admin' ? '/admin/login' : '/login';
+const getRole = path => path.startsWith('/admin') ? 'admin' : 'user';
+const getDefaultRoute = role => role === 'admin' ? '/admin/home' : '/';
+const getAuthPath = role => role === 'admin' ? '/admin/login' : '/';
 
 // ===== Lazy Component Loader =====
 const loadComp = layout => async () => {
@@ -49,21 +49,16 @@ const $routeHistory = (() => {
 
 // ===== Static Routes =====
 const routes = [
-  {
-    path: '/',
-    name: 'Root',
-    beforeEnter: async (_, __, next) => {
-      const role = await $isLoggedIn();
-      next(role ? getDefaultRoute(role) : '/login');
-    }
-  },
+  { path: '/', name: 'Intro', component: loadComp('layout_intro'), meta: { requiresAuth: false } },
 
-  { path: '/login', name: 'Login', component: loadComp('layout_login'), meta: { requiresAuth: false, role: '' } },
   { path: '/admin/login', name: 'Admin-Login', component: loadComp('admin/layout_login'), meta: { requiresAuth: false, role: 'admin' } },
-  { path: '/home', name: 'Dealer-Home', component: loadComp('layout_home'), meta: { requiresAuth: true, role: '' } },
+
   { path: '/admin/home', name: 'Admin-Home', component: loadComp('admin/layout_home'), meta: { requiresAuth: true, role: 'admin' } },
-  { path: '/admin', redirect: '/admin/home', meta: { requiresAuth: true, role: 'admin' } },
-  { path: '/:catchAll(.*)', name: 'NotFound', component: loadComp('layout_404'), meta: { requiresAuth: false, role: '' } }
+
+  { path: '/admin', redirect: '/admin/home' },
+
+  // Catch-all → show 404 page instead of redirecting to `/`
+  { path: '/:catchAll(.*)', name: 'NotFound', component: loadComp('layout_404') }
 ];
 
 
@@ -74,88 +69,46 @@ const router = createRouter({
 
 // ===== Global Guard =====
 router.beforeEach(async (to, from, next) => {
-  const role = await $isLoggedIn(); // 'admin', 'dealer', or null
-  const currentRole = getRole(to.path);
-  const isLoginPage = ['/login', '/admin/login'].includes(to.path);
+  const role = await $isLoggedIn(); // 'admin' or null
+  const isAdminRoute = to.path.startsWith('/admin');
+  const isAdminLogin = to.path === '/admin/login';
 
-  //alert(`[DEBUG]\nrole: ${role}\ncurrentRole: ${currentRole}\nto.path: ${to.path}`);
+  // Public route → allow anyone
+  if (!isAdminRoute) return next();
 
-  // If not logged in → always go to correct login page
-  if (!role) {
-    if (!isLoginPage) {
-      const redirectPath = getAuthPath(currentRole);
-      //alert(`[AuthGuard] Not logged in → redirecting to ${redirectPath}`);
-      $log(`[AuthGuard] Not logged in → redirecting to ${redirectPath}`);
-      return next(redirectPath);
-    }
-    //alert('[AuthGuard] On login page, continue');
-    return next(); 
-  }
+  // Admin route → not logged in
+  if (!role && isAdminRoute && !isAdminLogin) return next('/admin/login');
 
-  // already logged in
-  if (isLoginPage) {
-    const path = getDefaultRoute(role);
-    //alert(`[AuthGuard] Already logged in (${role}) → redirecting to ${path}`);
-    return next(path);
-  }
+  // Logged in admin → prevent access to login
+  if (role === 'admin' && isAdminLogin) return next('/admin/home');
 
-  if (currentRole && currentRole !== role) {
-    const path = getDefaultRoute(role);
-    //alert(`[AuthGuard] Role mismatch (${role} vs ${currentRole}) → redirecting to ${path}`);
-    return next(path);
-  }
-
- // alert('[AuthGuard] Passed → continuing to route');
   next();
 });
+
 
 
 // ===== Dynamic Route Adder =====
 const dynamicRouteNames = new Set();
 
 const $routeAdd = (type, modules) => {
-  const prefix = type ? `/${type}` : '';
-  const role = type || '';
-  // Step 1: Remove previously added dynamic routes
-  Array.from(dynamicRouteNames).forEach(name => {
-    if (router.hasRoute(name)) {
-      try {
-        router.removeRoute(name);
-        $log(`[Router] Removed dynamic route: ${name}`);
-      } catch (err) {
-        $log(`[Router] Failed to remove dynamic route: ${name}`, err);
-      }
-    }
-  });
-  dynamicRouteNames.clear();
+  if (type !== 'admin') return; // ignore non-admin routes
 
-  // Step 2: Add new dynamic routes
+  const prefix = '/admin';
+  const dynamicRouteNames = new Set();
+
   Object.keys(modules).forEach(key => {
     const routeName = key.charAt(0).toUpperCase() + key.slice(1);
-    const basePath = key === type ? prefix : `${prefix}/${key}`;
-
-    try {
-      router.addRoute({
-        path: `${basePath}/:slug1?/:slug2?/:slug3?`,
-        name: routeName,
-        component: loadComp(`${role ? role + '/' : ''}layout_${key}`),
-        meta: { 
-          requiresAuth: true, 
-          role, 
-          type: 'dynamic', 
-          path: key, 
-          keepAlive: true 
-        }
-      });
-      dynamicRouteNames.add(routeName);
-      $log(`[Router] Added dynamic route: ${basePath}`);
-    } catch (err) {
-      $log(`[Router] Failed to add dynamic route: ${basePath}`, err);
-    }
+    const basePath = `${prefix}/${key}`;
+    router.addRoute({
+      path: `${basePath}/:slug1?/:slug2?/:slug3?`,
+      name: routeName,
+      component: loadComp(`admin/layout_${key}`),
+      meta: { requiresAuth: true, role: 'admin', type: 'dynamic', path: key }
+    });
+    dynamicRouteNames.add(routeName);
   });
-
-  $log('[Router] Dynamic modules registered — no auto navigation triggered');
 };
+
 
 
 export { router, $routeAdd, $routeHistory };

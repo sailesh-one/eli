@@ -156,9 +156,9 @@ class Auth {
     public function login($captchaId, $request)
     {
         // Step 0: Verify captcha
-        if (!$this->verifyCaptcha($captchaId, $request)) {
-            api_response(400, 'fail', 'Captcha verification failed.');
-        }
+        // if (!$this->verifyCaptcha($captchaId, $request)) {
+        //     api_response(400, 'fail', 'Captcha verification failed.');
+        // }
         // Step 1: Validate inputs
         $email   = trim($request['email'] ?? '');
         $errors   = [];
